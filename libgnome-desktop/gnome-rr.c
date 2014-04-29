@@ -108,6 +108,7 @@ struct GnomeRRMode
 {
     ScreenInfo *	info;
     guint		id;
+    char *		name;
     glong               winsys_id;
     int			width;
     int			height;
@@ -482,7 +483,7 @@ fill_screen_info_from_resources (ScreenInfo *info,
 	GnomeRRMode *mode;
 
 	g_variant_get_child (modes, i, META_MONITOR_MODE_STRUCT, &id,
-			     NULL, NULL, NULL, NULL);
+			     NULL, NULL, NULL, NULL, NULL);
 	mode = mode_new (info, id);
 
 	g_ptr_array_add (a, mode);
@@ -2026,6 +2027,13 @@ gnome_rr_mode_get_id (GnomeRRMode *mode)
     return mode->id;
 }
 
+const char *
+gnome_rr_mode_get_name (GnomeRRMode *mode)
+{
+    g_return_val_if_fail (mode != NULL, 0);
+    return mode->name;
+}
+
 guint
 gnome_rr_mode_get_width (GnomeRRMode *mode)
 {
@@ -2073,8 +2081,8 @@ mode_initialize (GnomeRRMode *mode, GVariant *info)
 {
     gdouble frequency;
 
-    g_variant_get (info, "(uxuud)",
-		   &mode->id, &mode->winsys_id,
+    g_variant_get (info, "(usxuud)",
+		   &mode->id, &mode->name, &mode->winsys_id,
 		   &mode->width, &mode->height,
 		   &frequency);
     
@@ -2087,6 +2095,7 @@ mode_copy (const GnomeRRMode *from)
     GnomeRRMode *to = g_slice_new0 (GnomeRRMode);
 
     to->id = from->id;
+    to->name = g_strdup (from->name);
     to->info = from->info;
     to->width = from->width;
     to->height = from->height;
@@ -2098,6 +2107,7 @@ mode_copy (const GnomeRRMode *from)
 static void
 mode_free (GnomeRRMode *mode)
 {
+    g_free (mode->name);
     g_slice_free (GnomeRRMode, mode);
 }
 
