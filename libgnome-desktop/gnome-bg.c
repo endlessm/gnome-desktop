@@ -32,6 +32,7 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #include <stdarg.h>
 #include <stdlib.h>
 
+#include <endless/endless.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
@@ -53,6 +54,8 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #define BG_KEY_PICTURE_PLACEMENT  "picture-options"
 #define BG_KEY_PICTURE_OPACITY    "picture-opacity"
 #define BG_KEY_PICTURE_URI        "picture-uri"
+
+#define EOS_DEFAULT_BG_URI        "eos:///default"
 
 /* We keep the large pixbufs around if the next update
    in the slideshow is less than 60 seconds away */
@@ -258,6 +261,46 @@ queue_transitioned (GnomeBG *bg)
 					     NULL);
 }
 
+static gchar *
+get_personality_default_bg_uri (void)
+{
+  const gchar ** personalities;
+  const gchar *personality;
+  gchar *path, *filename, *uri;
+  GFile *file;
+  gint idx;
+
+  uri = NULL;
+
+  personalities = g_malloc0 (3 * sizeof (gchar *));
+  personalities[0] = eos_get_system_personality ();
+  personalities[1] = "default";
+
+  for (idx = 0; personalities[idx] != NULL; idx++)
+    {
+      personality = personalities[idx];
+      filename = g_strdup_printf ("desktop-background-%s.jpg", personality);
+      path = g_build_filename (DATADIR "/EndlessOS/personality-defaults",
+                               filename,
+                               NULL);
+      file = g_file_new_for_path (path);
+
+      if (g_file_query_exists (file, NULL))
+        uri = g_file_get_uri (file);
+
+      g_free (filename);
+      g_free (path);
+      g_object_unref (file);
+
+      if (uri != NULL)
+        break;
+    }
+
+  g_free (personalities);
+
+  return uri;
+}
+
 static gboolean 
 bg_gsettings_mapping (GVariant *value,
 			gpointer *result,
@@ -265,6 +308,7 @@ bg_gsettings_mapping (GVariant *value,
 {
 	const gchar *bg_key_value;
 	char *filename = NULL;
+	char *uri;
 
 	/* The final fallback if nothing matches is with a NULL value. */
 	if (value == NULL) {
@@ -273,22 +317,20 @@ bg_gsettings_mapping (GVariant *value,
 	}
 
 	bg_key_value = g_variant_get_string (value, NULL);
-
-	if (bg_key_value && *bg_key_value != '\0') {
+	if (g_strcmp0 (bg_key_value, EOS_DEFAULT_BG_URI) == 0) {
+		uri = get_personality_default_bg_uri ();
+		filename = g_filename_from_uri (uri, NULL, NULL);
+		g_free (uri);
+	} else if (bg_key_value && *bg_key_value != '\0') {
 		filename = g_filename_from_uri (bg_key_value, NULL, NULL);
-
-		if (filename != NULL && g_file_test (filename, G_FILE_TEST_EXISTS) == FALSE) {
+		if (filename == NULL || !g_file_test (filename, G_FILE_TEST_EXISTS)) {
 			g_free (filename);
-			return FALSE;
-		}
-
-		if (filename != NULL) {
-			*result = filename;
-			return TRUE;
+			filename = NULL;
 		}
 	}
 
-	return FALSE;
+	*result = filename;
+	return (filename != NULL);
 }
 
 void
