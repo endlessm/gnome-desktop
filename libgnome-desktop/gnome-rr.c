@@ -81,6 +81,7 @@ struct GnomeRROutput
 
     gboolean            is_primary;
     gboolean            is_presentation;
+    gboolean            is_underscanning;
 };
 
 struct GnomeRRCrtc
@@ -104,6 +105,7 @@ struct GnomeRRMode
 {
     ScreenInfo *	info;
     guint		id;
+    char *		name;
     glong               winsys_id;
     int			width;
     int			height;
@@ -385,7 +387,7 @@ fill_screen_info_from_resources (ScreenInfo *info,
 	GnomeRRMode *mode;
 
 	g_variant_get_child (modes, i, META_MONITOR_MODE_STRUCT, &id,
-			     NULL, NULL, NULL, NULL);
+			     NULL, NULL, NULL, NULL, NULL);
 	mode = mode_new (info, id);
 
 	g_ptr_array_add (a, mode);
@@ -1275,6 +1277,7 @@ output_initialize (GnomeRROutput *output, GVariant *info)
     g_variant_lookup (properties, "min-backlight-step", "i", &output->min_backlight_step);
     g_variant_lookup (properties, "primary", "b", &output->is_primary);
     g_variant_lookup (properties, "presentation", "b", &output->is_presentation);
+    g_variant_lookup (properties, "underscanning", "b", &output->is_underscanning);
 
     if ((edid = g_variant_lookup_value (properties, "edid", G_VARIANT_TYPE ("ay"))))
       {
@@ -1835,6 +1838,13 @@ gnome_rr_mode_get_id (GnomeRRMode *mode)
     return mode->id;
 }
 
+const char *
+gnome_rr_mode_get_name (GnomeRRMode *mode)
+{
+    g_return_val_if_fail (mode != NULL, 0);
+    return mode->name;
+}
+
 guint
 gnome_rr_mode_get_width (GnomeRRMode *mode)
 {
@@ -1861,8 +1871,8 @@ mode_initialize (GnomeRRMode *mode, GVariant *info)
 {
     gdouble frequency;
 
-    g_variant_get (info, "(uxuud)",
-		   &mode->id, &mode->winsys_id,
+    g_variant_get (info, "(usxuud)",
+		   &mode->id, &mode->name, &mode->winsys_id,
 		   &mode->width, &mode->height,
 		   &frequency);
     
@@ -1875,6 +1885,7 @@ mode_copy (const GnomeRRMode *from)
     GnomeRRMode *to = g_slice_new0 (GnomeRRMode);
 
     to->id = from->id;
+    to->name = g_strdup (from->name);
     to->info = from->info;
     to->width = from->width;
     to->height = from->height;
@@ -1886,6 +1897,7 @@ mode_copy (const GnomeRRMode *from)
 static void
 mode_free (GnomeRRMode *mode)
 {
+    g_free (mode->name);
     g_slice_free (GnomeRRMode, mode);
 }
 
@@ -1991,4 +2003,11 @@ gnome_rr_crtc_get_gamma (GnomeRRCrtc     *crtc,
     g_bytes_unref (blue_bytes);
 
   return TRUE;
+}
+
+gboolean
+gnome_rr_output_get_is_underscanning (GnomeRROutput *output)
+{
+    g_assert(output != NULL);
+    return output->is_underscanning;
 }
