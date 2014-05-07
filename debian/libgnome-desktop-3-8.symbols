@@ -96,6 +96,7 @@ libgnome-desktop-3.so.8 libgnome-desktop-3-8 #MINVER#
  gnome_rr_mode_get_freq@Base 3.7.3
  gnome_rr_mode_get_height@Base 3.7.3
  gnome_rr_mode_get_id@Base 3.7.3
+ gnome_rr_mode_get_name@Base 3.10.2+dev14.eb6f2e3-1bed1
  gnome_rr_mode_get_type@Base 3.7.3
  gnome_rr_mode_get_width@Base 3.7.3
  gnome_rr_output_can_clone@Base 3.7.3
@@ -107,6 +108,7 @@ libgnome-desktop-3.so.8 libgnome-desktop-3-8 #MINVER#
  gnome_rr_output_get_id@Base 3.7.3
  gnome_rr_output_get_ids_from_edid@Base 3.7.3
  gnome_rr_output_get_is_primary@Base 3.7.3
+ gnome_rr_output_get_is_underscanning@Base 3.10.2+dev14.eb6f2e3-1bed1
  gnome_rr_output_get_min_backlight_step@Base 3.10.1-2endless4bed1
  gnome_rr_output_get_name@Base 3.7.3
  gnome_rr_output_get_physical_size@Base 3.9.90
@@ -125,6 +127,7 @@ libgnome-desktop-3.so.8 libgnome-desktop-3-8 #MINVER#
  gnome_rr_output_info_get_rotation@Base 3.7.3
  gnome_rr_output_info_get_serial@Base 3.7.3
  gnome_rr_output_info_get_type@Base 3.7.3
+ gnome_rr_output_info_get_underscanning@Base 3.10.2+dev14.eb6f2e3-1bed1
  gnome_rr_output_info_get_vendor@Base 3.7.3
  gnome_rr_output_info_is_active@Base 3.7.3
  gnome_rr_output_info_is_connected@Base 3.7.3
@@ -133,6 +136,7 @@ libgnome-desktop-3.so.8 libgnome-desktop-3-8 #MINVER#
  gnome_rr_output_info_set_primary@Base 3.7.3
  gnome_rr_output_info_set_refresh_rate@Base 3.7.3
  gnome_rr_output_info_set_rotation@Base 3.7.3
+ gnome_rr_output_info_set_underscanning@Base 3.10.2+dev14.eb6f2e3-1bed1
  gnome_rr_output_info_supports_rotation@Base 3.10.1-2endless3bed1
  gnome_rr_output_is_builtin_display@Base 3.9.0
  gnome_rr_output_list_modes@Base 3.7.3
