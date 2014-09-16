@@ -41,6 +41,7 @@ struct _GnomeWallClockPrivate {
 	
 	GFileMonitor *tz_monitor;
 	GSettings    *desktop_settings;
+	gulong        desktop_settings_changed_id;
 
 	gboolean time_only;
 	gboolean ampm_available;
@@ -85,7 +86,9 @@ gnome_wall_clock_init (GnomeWallClock *self)
 	g_signal_connect (self->priv->tz_monitor, "changed", G_CALLBACK (on_tz_changed), self);
 	
 	self->priv->desktop_settings = g_settings_new ("org.gnome.desktop.interface");
-	g_signal_connect (self->priv->desktop_settings, "changed", G_CALLBACK (on_schema_change), self);
+	self->priv->desktop_settings_changed_id = 
+		g_signal_connect (self->priv->desktop_settings, "changed",
+				  G_CALLBACK (on_schema_change), self);
 
 	ampm = nl_langinfo (AM_STR);
 	if (ampm != NULL && *ampm != '\0')
@@ -107,6 +110,12 @@ gnome_wall_clock_dispose (GObject *object)
 	if (self->priv->tz_monitor != NULL) {
 		g_object_unref (self->priv->tz_monitor);
 		self->priv->tz_monitor = NULL;
+	}
+
+	if (self->priv->desktop_settings_changed_id != 0) {
+		g_signal_handler_disconnect (self->priv->desktop_settings,
+					     self->priv->desktop_settings_changed_id);
+		self->priv->desktop_settings_changed_id = 0;
 	}
 
 	if (self->priv->desktop_settings != NULL) {
