@@ -45,6 +45,7 @@ struct _GnomeWallClockPrivate {
 
 	gboolean time_only;
 	gboolean ampm_available;
+	gboolean fallback_ampm;
 };
 
 enum {
@@ -91,8 +92,10 @@ gnome_wall_clock_init (GnomeWallClock *self)
 				  G_CALLBACK (on_schema_change), self);
 
 	ampm = nl_langinfo (AM_STR);
-	if (ampm != NULL && *ampm != '\0')
-		self->priv->ampm_available = TRUE;
+
+	/* We will fallback to AM/PM in EOS if no localized string is found */
+	self->priv->fallback_ampm = (ampm == NULL || *ampm == '\0');
+	self->priv->ampm_available = TRUE;
 
 	update_clock (self);
 }
@@ -299,6 +302,8 @@ gnome_wall_clock_string_for_datetime (GnomeWallClock      *self,
 				      gboolean             show_seconds)
 {
 	const char *format_string;
+	char *format_string_dup;
+	char *ret;
 
 	if (clock_format == G_DESKTOP_CLOCK_FORMAT_24H ||
 	    self->priv->ampm_available == FALSE) {
@@ -317,6 +322,7 @@ gnome_wall_clock_string_for_datetime (GnomeWallClock      *self,
 			   in 24-hour mode. */
 			format_string = show_seconds ? _("%R:%S") : _("%R");
 		}
+		format_string_dup = g_strdup (format_string);
 	} else {
 		if (show_full_date) {
 			/* Translators: This is a time format with full date used
@@ -334,9 +340,21 @@ gnome_wall_clock_string_for_datetime (GnomeWallClock      *self,
 			format_string = show_seconds ? _("%l:%M:%S %p")
 				: _("%l:%M %p");
 		}
+
+		/* Now add the AM/PM depending on whether we are in fallback mode */
+		if (self->priv->fallback_ampm) {
+			GDateTime *now = g_date_time_new_now (self->priv->timezone);
+			format_string_dup = g_strdup_printf ("%s%s",
+							     format_string,
+							     g_date_time_get_hour (now) >= 12 ? "PM" : "AM");
+		} else {
+			format_string_dup = g_strdup (format_string);
+		}
 	}
 
-	return date_time_format (now, format_string);
+	ret = date_time_format (now, format_string_dup);
+	g_free (format_string_dup);
+	return ret;
 }
 
 static gboolean
