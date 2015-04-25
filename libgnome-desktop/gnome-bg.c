@@ -32,7 +32,6 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include <endless/endless.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
@@ -262,43 +261,41 @@ queue_transitioned (GnomeBG *bg)
 }
 
 static gchar *
-get_personality_default_bg_uri (void)
+get_endless_default_bg_uri (void)
 {
-  const gchar ** personalities;
-  const gchar *personality;
-  gchar *path, *filename, *uri;
-  GFile *file;
-  gint idx;
+	const gchar * const *language_names;
+	const gchar *language_name;
+	gchar *path, *filename, *uri;
+	GFile *file;
+	gint idx;
 
-  uri = NULL;
+	language_names = g_get_language_names ();
 
-  personalities = g_malloc0 (3 * sizeof (gchar *));
-  personalities[0] = eos_get_system_personality ();
-  personalities[1] = "default";
+	for (idx = 0; language_names[idx] != NULL; idx++) {
+		language_name = language_names[idx];
 
-  for (idx = 0; personalities[idx] != NULL; idx++)
-    {
-      personality = personalities[idx];
-      filename = g_strdup_printf ("desktop-background-%s.jpg", personality);
-      path = g_build_filename (DATADIR "/EndlessOS/personality-defaults",
-                               filename,
-                               NULL);
-      file = g_file_new_for_path (path);
+		/* discard language names with encodings */
+		if (strchr (language_name, '.') != NULL)
+			continue;
 
-      if (g_file_query_exists (file, NULL))
-        uri = g_file_get_uri (file);
+		filename = g_strdup_printf ("desktop-background-%s.jpg", language_name);
+		path = g_build_filename (DATADIR "/EndlessOS/language-defaults",
+					 filename,
+					 NULL);
+		file = g_file_new_for_path (path);
 
-      g_free (filename);
-      g_free (path);
-      g_object_unref (file);
+		if (g_file_query_exists (file, NULL))
+			uri = g_file_get_uri (file);
 
-      if (uri != NULL)
-        break;
-    }
+		g_free (filename);
+		g_free (path);
+		g_object_unref (file);
 
-  g_free (personalities);
+		if (uri != NULL)
+			break;
+	}
 
-  return uri;
+	return uri;
 }
 
 static gboolean 
@@ -318,7 +315,7 @@ bg_gsettings_mapping (GVariant *value,
 
 	bg_key_value = g_variant_get_string (value, NULL);
 	if (g_strcmp0 (bg_key_value, EOS_DEFAULT_BG_URI) == 0) {
-		uri = get_personality_default_bg_uri ();
+		uri = get_endless_default_bg_uri ();
 		filename = g_filename_from_uri (uri, NULL, NULL);
 		g_free (uri);
 	} else if (bg_key_value && *bg_key_value != '\0') {
