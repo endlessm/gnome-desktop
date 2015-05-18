@@ -9,7 +9,6 @@ Standards-Version: 3.9.4
 Build-Depends: debhelper (>= 8),
                dpkg-dev (>= 1.15.1),
                dh-autoreconf,
-               eos-sdk-dev,
                libglib2.0-dev (>= 2.38.0),
                intltool (>= 0.40.6),
                iso-codes,
