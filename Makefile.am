@@ -6,7 +6,7 @@ endif
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-scrollkeeper
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-scrollkeeper
 
 versiondir = $(datadir)/gnome
 version_DATA = gnome-version.xml
