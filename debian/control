@@ -54,7 +54,6 @@ Depends: ${misc:Depends},
 Replaces: libgnome-desktop-3-2 (<< 3.5.2),
           libgnome-desktop-3-4 (<< 3.7.90)
 Breaks: libgnome-desktop-3-10
-Recommends: hwdata (>= 0.227-1)
 Description: Utility library for loading .desktop files - runtime files
  This library is used by GNOME to load the .desktop files.
 
