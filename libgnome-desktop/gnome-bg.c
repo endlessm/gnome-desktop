@@ -269,10 +269,12 @@ get_endless_default_bg_uri (void)
 	GFile *file;
 	gint idx;
 
+	uri = NULL;
 	language_names = g_get_language_names ();
 
 	for (idx = 0; language_names[idx] != NULL; idx++) {
 		language_name = language_names[idx];
+		g_clear_pointer (&uri, g_free);
 
 		/* discard language names with encodings */
 		if (strchr (language_name, '.') != NULL)
@@ -316,8 +318,10 @@ bg_gsettings_mapping (GVariant *value,
 	bg_key_value = g_variant_get_string (value, NULL);
 	if (g_strcmp0 (bg_key_value, EOS_DEFAULT_BG_URI) == 0) {
 		uri = get_endless_default_bg_uri ();
-		filename = g_filename_from_uri (uri, NULL, NULL);
-		g_free (uri);
+		if (uri != NULL) {
+			filename = g_filename_from_uri (uri, NULL, NULL);
+			g_free (uri);
+		}
 	} else if (bg_key_value && *bg_key_value != '\0') {
 		filename = g_filename_from_uri (bg_key_value, NULL, NULL);
 		if (filename == NULL || !g_file_test (filename, G_FILE_TEST_EXISTS)) {
