@@ -10,7 +10,6 @@ AM_CPPFLAGS =							\
 	$(GNOME_DESKTOP_CFLAGS)					\
 	$(XLIB_CFLAGS)						\
 	-DG_LOG_DOMAIN=\"GnomeDesktop\"				\
-	-DDATADIR=\""$(datadir)"\"				\
 	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale\""	\
 	-DISO_CODES_PREFIX=\""$(ISO_CODES_PREFIX)"\"		\
 	-DLIBLOCALEDIR=\""$(prefix)/lib/locale"\"		\

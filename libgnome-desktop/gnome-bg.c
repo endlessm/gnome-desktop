@@ -54,8 +54,6 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #define BG_KEY_PICTURE_OPACITY    "picture-opacity"
 #define BG_KEY_PICTURE_URI        "picture-uri"
 
-#define EOS_DEFAULT_BG_URI        "eos:///default"
-
 /* We keep the large pixbufs around if the next update
    in the slideshow is less than 60 seconds away */
 #define KEEP_EXPENSIVE_CACHE_SECS 60
@@ -260,44 +258,6 @@ queue_transitioned (GnomeBG *bg)
 					     NULL);
 }
 
-static gchar *
-get_endless_default_bg_uri (void)
-{
-	const gchar * const *language_names;
-	const gchar *language_name;
-	gchar *path, *filename, *uri;
-	GFile *file;
-	gint idx;
-
-	language_names = g_get_language_names ();
-
-	for (idx = 0; language_names[idx] != NULL; idx++) {
-		language_name = language_names[idx];
-
-		/* discard language names with encodings */
-		if (strchr (language_name, '.') != NULL)
-			continue;
-
-		filename = g_strdup_printf ("desktop-background-%s.jpg", language_name);
-		path = g_build_filename (DATADIR "/eos-media",
-					 filename,
-					 NULL);
-		file = g_file_new_for_path (path);
-
-		if (g_file_query_exists (file, NULL))
-			uri = g_file_get_uri (file);
-
-		g_free (filename);
-		g_free (path);
-		g_object_unref (file);
-
-		if (uri != NULL)
-			break;
-	}
-
-	return uri;
-}
-
 static gboolean 
 bg_gsettings_mapping (GVariant *value,
 			gpointer *result,
@@ -305,7 +265,6 @@ bg_gsettings_mapping (GVariant *value,
 {
 	const gchar *bg_key_value;
 	char *filename = NULL;
-	char *uri;
 
 	/* The final fallback if nothing matches is with a NULL value. */
 	if (value == NULL) {
@@ -314,20 +273,22 @@ bg_gsettings_mapping (GVariant *value,
 	}
 
 	bg_key_value = g_variant_get_string (value, NULL);
-	if (g_strcmp0 (bg_key_value, EOS_DEFAULT_BG_URI) == 0) {
-		uri = get_endless_default_bg_uri ();
-		filename = g_filename_from_uri (uri, NULL, NULL);
-		g_free (uri);
-	} else if (bg_key_value && *bg_key_value != '\0') {
+
+	if (bg_key_value && *bg_key_value != '\0') {
 		filename = g_filename_from_uri (bg_key_value, NULL, NULL);
-		if (filename == NULL || !g_file_test (filename, G_FILE_TEST_EXISTS)) {
+
+		if (filename != NULL && g_file_test (filename, G_FILE_TEST_EXISTS) == FALSE) {
 			g_free (filename);
-			filename = NULL;
+			return FALSE;
+		}
+
+		if (filename != NULL) {
+			*result = filename;
+			return TRUE;
 		}
 	}
 
-	*result = filename;
-	return (filename != NULL);
+	return FALSE;
 }
 
 void
