@@ -1,4 +1,5 @@
 libgnome-desktop-3.so.12 libgnome-desktop-3-12 #MINVER#
+* Build-Depends-Package: libgnome-desktop-3-dev
  gnome_bg_changes_with_time@Base 3.17.92
  gnome_bg_create_frame_thumbnail@Base 3.17.92
  gnome_bg_create_surface@Base 3.17.92
@@ -98,7 +99,7 @@ libgnome-desktop-3.so.12 libgnome-desktop-3-12 #MINVER#
  gnome_rr_mode_get_freq_f@Base 3.19.93
  gnome_rr_mode_get_height@Base 3.17.92
  gnome_rr_mode_get_id@Base 3.17.92
- gnome_rr_mode_get_name@Base 3.10.2+dev14.eb6f2e3-1bed1
+ gnome_rr_mode_get_is_interlaced@Base 3.21.4
  gnome_rr_mode_get_is_tiled@Base 3.17.92
  gnome_rr_mode_get_type@Base 3.17.92
  gnome_rr_mode_get_width@Base 3.17.92

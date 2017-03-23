@@ -10,18 +10,15 @@ Uploaders: Andreas Henriksson <andreas@fatal.se>, Michael Biebl <biebl@debian.or
 Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/gnome-desktop3
 Vcs-Browser: https://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/gnome-desktop3
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 9),
-               dh-autoreconf,
+Build-Depends: debhelper (>= 10),
                libglib2.0-dev (>= 2.44.0),
+               gnome-common,
                intltool (>= 0.40.6),
                iso-codes,
-               cdbs (>= 0.4.93),
                gnome-pkg-tools (>= 0.10),
                gtk-doc-tools (>= 1.4),
                docbook-xml,
                libx11-dev,
-               libxrandr-dev (>= 2:1.3),
-               libxext-dev,
                xkb-data,
                libgdk-pixbuf2.0-dev (>= 2.33.0),
                libgl1-mesa-dev,
@@ -29,6 +26,7 @@ Build-Depends: debhelper (>= 9),
                libxml2-dev (>= 2.4.20),
                libglib2.0-doc,
                libgtk-3-doc,
+               libudev-dev [linux-any],
                gobject-introspection (>= 0.10.2-1~),
                libgirepository1.0-dev (>= 0.10.2-1~),
                gsettings-desktop-schemas-dev (>= 3.5.91),
@@ -53,7 +51,7 @@ Depends: ${misc:Depends},
          gnome-desktop3-data (>= ${source:Version})
 Replaces: libgnome-desktop-3-2 (<< 3.5.2),
           libgnome-desktop-3-4 (<< 3.7.90)
-Breaks: libgnome-desktop-3-10
+Breaks: libgnome-desktop-3-10, mutter (<< 3.21.2)
 Description: Utility library for loading .desktop files - runtime files
  This library is used by GNOME to load the .desktop files.
 
@@ -69,16 +67,6 @@ Depends: ${misc:Depends},
 Description: Utility library for loading .desktop files - development files
  This package provides the include files and static library for the GNOME
  desktop library functions.
-
-Package: libgnome-desktop-3-12-dbg
-Architecture: any
-Section: debug
-Depends: ${misc:Depends},
-         libgnome-desktop-3-12 (= ${binary:Version})
-Description: Utility library for loading .desktop files - debugging symbols
- This library is used by GNOME to load the .desktop files.
- .
- This package contains the debugging symbols for libgnome-desktop-3-12.
 
 Package: gir1.2-gnomedesktop-3.0
 Section: introspection
