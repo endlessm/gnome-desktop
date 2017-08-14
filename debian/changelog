@@ -1,3 +1,9 @@
+gnome-desktop3 (3.24.2-0endless1) eos; urgency=medium
+
+  * New upstream release.
+
+ -- Mario Sanchez Prada <mario@endlessm.com>  Mon, 14 Aug 2017 16:53:03 +0000
+
 gnome-desktop3 (3.22.2-1) unstable; urgency=medium
 
   * New upstream release.
