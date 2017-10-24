@@ -1696,7 +1696,8 @@ gnome_rr_output_is_builtin_display (GnomeRROutput *output)
 {
     g_return_val_if_fail (output != NULL, FALSE);
 
-    return _gnome_rr_output_name_is_builtin_display (output->name);
+    return _gnome_rr_output_name_is_builtin_display (output->name) ||
+           g_strcmp0 (output->display_name, "Built-in display") == 0;
 }
 
 /**
