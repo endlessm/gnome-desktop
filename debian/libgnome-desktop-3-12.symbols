@@ -51,6 +51,7 @@ libgnome-desktop-3.so.12 libgnome-desktop-3-12 #MINVER#
  gnome_desktop_thumbnail_md5@Base 3.17.92
  gnome_desktop_thumbnail_path_for_uri@Base 3.17.92
  gnome_desktop_thumbnail_scale_down_pixbuf@Base 3.17.92
+ gnome_desktop_thumbnail_script_exec@Base 3.25.90
  gnome_get_all_locales@Base 3.17.92
  gnome_get_country_from_code@Base 3.17.92
  gnome_get_country_from_locale@Base 3.17.92
@@ -99,7 +100,6 @@ libgnome-desktop-3.so.12 libgnome-desktop-3-12 #MINVER#
  gnome_rr_mode_get_freq_f@Base 3.19.93
  gnome_rr_mode_get_height@Base 3.17.92
  gnome_rr_mode_get_id@Base 3.17.92
- gnome_rr_mode_get_name@Base 3.10.2+dev14.eb6f2e3-1bed1
  gnome_rr_mode_get_is_interlaced@Base 3.21.4
  gnome_rr_mode_get_is_tiled@Base 3.17.92
  gnome_rr_mode_get_type@Base 3.17.92
