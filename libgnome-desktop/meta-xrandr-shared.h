@@ -37,5 +37,5 @@ typedef enum {
 
 #define META_OUTPUT_STRUCT         "(uxiausauau@a{sv})"
 #define META_CRTC_STRUCT           "(uxiiiiiuau@a{sv})"
-#define META_MONITOR_MODE_STRUCT   "(usxuudu)"
+#define META_MONITOR_MODE_STRUCT   "(uxuudu)"
 #endif
