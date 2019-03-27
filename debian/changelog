@@ -1,3 +1,179 @@
+gnome-desktop3 (3.32.0-1) experimental; urgency=medium
+
+  * New upstream release
+  * Drop tests-unset-language-related-environment-variables.patch: Applied
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 17 Mar 2019 07:25:18 -0400
+
+gnome-desktop3 (3.31.91-1) experimental; urgency=medium
+
+  * New upstream development release
+  * Have libgnome-desktop-3-dev depend on libseccomp-dev, libudev-dev,
+    and iso-codes
+    - required by its pkgconfig file after switch to meson
+  * Add tests-unset-language-related-environment-variables.patch:
+    - Proposed patch to fix tests when the locale has already been set
+
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 20 Feb 2019 07:14:56 -0500
+
+gnome-desktop3 (3.31.90-1) experimental; urgency=medium
+
+  * New upstream development release
+  * Build with meson
+  * Build-Depend on dh-sequence-gir and dh-sequence-gnome
+  * debian/libgnome-desktop-3-17.symbols: Add new symbols
+  * Use xvfb to run build tests
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 05 Feb 2019 20:06:59 -0500
+
+gnome-desktop3 (3.30.2.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop all patches: applied in new release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 05 Feb 2019 18:03:26 -0500
+
+gnome-desktop3 (3.30.2-4) unstable; urgency=medium
+
+  * Restore -Wl,-O1 to our LDFLAGS
+  * Bump Standards-Version to 4.3.0
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 23 Dec 2018 11:18:52 -0500
+
+gnome-desktop3 (3.30.2-3) unstable; urgency=medium
+
+  * Cherry-pick thumbnail-Fix-use-after-free-when-getting-a-preview-icon.patch:
+    - Fix from gnome-3-30 branch for a potential crash bug
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 11 Dec 2018 10:41:44 -0500
+
+gnome-desktop3 (3.30.2-2) unstable; urgency=medium
+
+  * Cherry-pick thumbnail-Handle-non-usrmerged-systems.patch:
+    - Fix thumbnailer on 32-bit systems where /lib64 is not available. Also
+      improve handling of usrmerged and non-usrmerged systems. (LP: #1807127)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 10 Dec 2018 21:28:33 -0500
+
+gnome-desktop3 (3.30.2-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release
+    - Translation updates
+  * Standards-Version: 4.2.1 (no further changes)
+
+ -- Simon McVittie <smcv@debian.org>  Fri, 02 Nov 2018 09:00:45 +0000
+
+gnome-desktop3 (3.30.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * debian/copyright: Remove obsolete lines
+
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 27 Sep 2018 20:48:14 -0400
+
+gnome-desktop3 (3.30.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Release to unstable
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 03 Sep 2018 13:49:53 -0400
+
+gnome-desktop3 (3.29.91-1) experimental; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Don't install commit-level ChangeLog in packages (Policy §12.7)
+  * Wrap all dependencies (wrap-and-sort -a)
+  * Standards-Version: 4.2.0 (no further changes)
+  * Set Rules-Requires-Root to no
+
+ -- Simon McVittie <smcv@debian.org>  Tue, 21 Aug 2018 11:44:32 +0100
+
+gnome-desktop3 (3.29.90.1-1) experimental; urgency=medium
+
+  * New upstream development release
+  * Update debian/gbp.conf
+  * Drop obsolete Build-Depends on intltool
+  * Drop all patches: applied in new release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 01 Aug 2018 22:32:33 -0400
+
+gnome-desktop3 (3.28.2-2) unstable; urgency=medium
+
+  * Team upload
+  * d/p/Don-t-leak-crts-outputs-modes-in-fill_out_screen_info.patch,
+    d/p/Don-t-leak-all_transforms-in-crtc_initialize.patch,
+    d/p/Don-t-leak-info-in-output-crtc-mode-_initialize.patch,
+    d/p/Free-GVariants-in-the-same-scope-that-they-are-allocated.patch,
+    d/p/Don-t-leak-properties-in-output_initialize.patch:
+    Add patches from Sam Morris to fix various memory leaks
+    (Closes: #903901)
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 26 Jul 2018 23:36:06 +0100
+
+gnome-desktop3 (3.28.2-1) unstable; urgency=medium
+
+  * New upstream release (LP: #1771242)
+  * debian/source/lintian-overrides: Drop, obsolete
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 14 May 2018 21:34:40 -0400
+
+gnome-desktop3 (3.28.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Bump Standards-Version to 4.1.4
+
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 11 Apr 2018 10:32:26 -0400
+
+gnome-desktop3 (3.28.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sun, 18 Mar 2018 09:02:58 -0400
+
+gnome-desktop3 (3.27.92-1) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * New upstream release candidate
+  * Release to unstable
+
+  [ Simon McVittie ]
+  * gir1.2-gnomedesktop-3.0: Add Breaks on gnome-shell, libmutter versions
+    that were built against libgnome-desktop-3-12, to avoid gnome-shell
+    crashing on startup during libgnome-desktop-3-17 transition
+    (Closes: #890809)
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 10 Mar 2018 10:41:07 -0500
+
+gnome-desktop3 (3.27.90-1) experimental; urgency=medium
+
+  * New upstream development release
+  * Rename library to match new soname
+  * Bump minimum gsettings-desktop-schemas to 3.27.0
+  * Drop 0001-build-Disable-seccomp-on-linux-architectures-where-i.patch:
+    Applied in new release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Fri, 09 Feb 2018 23:00:29 -0500
+
+gnome-desktop3 (3.26.2-6) unstable; urgency=medium
+
+  * d/p/0001-build-Disable-seccomp-on-linux-architectures-where-i.patch: Fix
+    compilation on architectures seccomp is not supported.
+
+ -- Laurent Bigonville <bigon@debian.org>  Tue, 06 Feb 2018 11:16:57 +0100
+
+gnome-desktop3 (3.26.2-5) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * Update Vcs fields for migration to https://salsa.debian.org/
+
+  [ Laurent Bigonville ]
+  * d/p/0001-build-Disable-seccomp-on-linux-architectures-where-i.patch,
+    debian/control.in: Disable seccomp on arch where it's not supported
+  * debian/control.in: Bump Standards-Version 4.1.3 (no further changes)
+
+ -- Laurent Bigonville <bigon@debian.org>  Mon, 05 Feb 2018 17:00:41 +0100
+
 gnome-desktop3 (3.26.2-4) unstable; urgency=medium
 
   * Properly set LIB_PKG for arch:all builds
@@ -282,8 +458,8 @@ gnome-desktop3 (3.12.2-1) unstable; urgency=medium
 
 gnome-desktop3 (3.12.1-1) experimental; urgency=medium
 
-  * Drop conflicts against libgnome-desktop-3-7 because it is not 
-    necessary: only leaf packages in G3.8 use gnome-desktop, including 
+  * Drop conflicts against libgnome-desktop-3-7 because it is not
+    necessary: only leaf packages in G3.8 use gnome-desktop, including
     gnome-shell that does work with the new g-desktop library.
   * New upstream bugfix release.
 
@@ -662,7 +838,7 @@ gnome-desktop3 (2.91.3-1) experimental; urgency=low
     - dropped shlibs update since .symbols are used
     - updated to the new library name
     - use quilt as a patch system
-    - use --disable-gnome-about --disable-desktop-docs to avoid conflicting 
+    - use --disable-gnome-about --disable-desktop-docs to avoid conflicting
       with the gtk2 version
 
   [ Sjoerd Simons ]
@@ -719,7 +895,7 @@ gnome-desktop (2.28.2-1) unstable; urgency=low
 gnome-desktop (2.28.1-3) unstable; urgency=low
 
   * 01_trap_rr_x_errors.patch: dropped, this solution is fugly.
-  * 01_check_xrandr_version.patch: check that the extension is available 
+  * 01_check_xrandr_version.patch: check that the extension is available
     at version 1.2 before running code that requires version 1.2 anyway.
 
  -- Josselin Mouette <joss@debian.org>  Sat, 21 Nov 2009 10:38:16 +0100
@@ -727,7 +903,7 @@ gnome-desktop (2.28.1-3) unstable; urgency=low
 gnome-desktop (2.28.1-2) unstable; urgency=low
 
   * Switch to python-support.
-  * 01_trap_rr_x_errors.patch: patch from Chris Coulson to support 
+  * 01_trap_rr_x_errors.patch: patch from Chris Coulson to support
     FreeNX, it fixes some BadRequest errors. Closes: #556797.
 
  -- Josselin Mouette <joss@debian.org>  Wed, 18 Nov 2009 09:16:11 +0100
@@ -773,7 +949,7 @@ gnome-desktop (2.26.0-1) experimental; urgency=low
 
 gnome-desktop (2.24.3-1) unstable; urgency=low
 
-  * Build-depend on libglib2.0-doc and libgtk2.0-doc to ensure proper 
+  * Build-depend on libglib2.0-doc and libgtk2.0-doc to ensure proper
     xrefs.
   * New upstream release.
   * 90_relibtoolize.patch: regenerate for the new version.
@@ -799,14 +975,14 @@ gnome-desktop (2.24.1-1) experimental; urgency=low
   * Add a ~ to build-depend on libgnomeui-dev.
   * Rename the library package to libgnome-desktop-2-7.
   * Ship the documentation in libgnome-desktop-dev.
-  * 90_relibtoolize.patch: relibtoolize to avoid the rpath issue on 
+  * 90_relibtoolize.patch: relibtoolize to avoid the rpath issue on
     amd64.
 
  -- Josselin Mouette <joss@debian.org>  Mon, 17 Nov 2008 21:43:38 +0100
 
 gnome-desktop (2.22.3-2) unstable; urgency=low
 
-  * Ship files in /usr/share/omf in gnome-desktop-data. Closes: #492872. 
+  * Ship files in /usr/share/omf in gnome-desktop-data. Closes: #492872.
 
  -- Josselin Mouette <joss@debian.org>  Thu, 18 Sep 2008 15:03:53 +0200
 
@@ -1055,7 +1231,7 @@ gnome-desktop (2.12.1-1) experimental; urgency=low
     - updated for the packages changes.
     - updated the libgnomeui requirement.
   * debian/gnome-desktop-data.install, debian/gnome-about.install:
-    - install the desktop file with the binary.   
+    - install the desktop file with the binary.
   * debian/rules:
     - don't update scrollkeeper files on build.
   * debian/watch:
@@ -1115,7 +1291,7 @@ gnome-desktop (2.10.0-1) experimental; urgency=low
   * debian/patches/01_relibtoolise.patch:
     - updated.
   * debian/watch:
-    - updated. 
+    - updated.
 
  -- Sebastien Bacher <seb128@debian.org>  Fri,  8 Apr 2005 17:51:35 +0200
 
@@ -2107,7 +2283,7 @@ gnome-core (1.0.53-2) unstable; urgency=low
 
 gnome-core (1.0.53-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * gnome-session does now depend on gnome-panel and recommends
     gmc (both are needed for a full Gnome desktop).
   * gnome-terminal does not have a border. Closes: #38972
@@ -2119,7 +2295,7 @@ gnome-core (1.0.52-1) unstable; urgency=low
   * New maintainer. Steve said that he wanted to give away some of
     his packages. I've asked to take gnome-core, he never replied, so
     I'm taking it but I will give it back to him if he wanted to
-    keep it. In the meantime I can better manage bugs with my name 
+    keep it. In the meantime I can better manage bugs with my name
     in the Maintainer field.
   * New upstream version.
 
@@ -2160,11 +2336,11 @@ gnome-core (1.0.9-0.1) unstable; urgency=low
   * cdplayer_applet works again. Closes: #42192
   * gnome pager works well: Closes: #42499, #42610
   * modem_lights draws itself correctly. Closes: #43861, #45055
-  * The dialer applets doesn't exit when stopping while 
+  * The dialer applets doesn't exit when stopping while
     not yet connected. Closes: #45287
   * No more Debian menu in the panel. Closes: #41040
   * GnomeICU works with this panel. Closes: #39626, #39515
-  * gnome-panel-data conflicts with asclock. 
+  * gnome-panel-data conflicts with asclock.
     Closes: #40712, #40715, #40808, #41430
     A better solution will be needed. Maybe put asclock in his own
     package or create a asclock-data package that will be shared.
@@ -2185,7 +2361,7 @@ gnome-core (1.0.9-0.1) unstable; urgency=low
   * The terminal keeps its size when dragging the manu bar in and out.
     Closes: #44762
   * The menu section of gnome-terminal corrected. Closes: #37635
-    
+
  -- Raphael Hertzog <hertzog@debian.org>  Wed, 22 Sep 1999 13:24:34 +0200
 
 gnome-core (1.0.7-1) unstable; urgency=low

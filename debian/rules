@@ -1,35 +1,32 @@
 #!/usr/bin/make -f
 
--include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
+LIB_PKG := $(filter-out %-dev %-bin,$(filter lib%,$(shell awk '/^Package: / { print $$2 }' debian/control)))
 
-GNOME_MODULE := gnome-desktop
-
-LIB_PKG := $(filter-out %-dev %-dbg %-bin,$(filter lib%,$(shell awk '/^Package: / { print $$2 }' debian/control)))
-
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs -Wl,--as-needed
 
 %:
-	dh $@ --with gnome,gir
-
-override_dh_autoreconf:
-	dh_autoreconf --as-needed
+	dh $@
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
-		--libexecdir=\$${libdir}/$(LIB_PKG) \
-		--with-gnome-distributor=Endless \
-		--disable-date-in-gnome-version \
-		--enable-gtk-doc \
-		--enable-desktop-docs \
-		--enable-introspection
+		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/$(LIB_PKG) \
+		-Dgnome_distributor=$(shell dpkg-vendor --query vendor) \
+		-Ddate_in_gnome_version=false \
+		-Dgtk_doc=true \
+		-Ddesktop-docs=true
+
+override_dh_installchangelogs:
+	dh_installchangelogs -XChangeLog
 
 override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
 
-override_dh_install:
-	find debian/tmp -name '*.la' -print -delete
-	dh_install
-
 override_dh_missing:
 	dh_missing --fail-missing
+
+CHECK_RUNTIME_DIR= $(CURDIR)/debian/tmp/run
+
+override_dh_auto_test:
+	mkdir -p -m0700 $(CHECK_RUNTIME_DIR)
+	HOME=$(CHECK_RUNTIME_DIR) G_MESSAGES_DEBUG=all xvfb-run -a dh_auto_test
