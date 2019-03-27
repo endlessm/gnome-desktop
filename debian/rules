@@ -11,7 +11,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs -Wl,--as-needed
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/$(LIB_PKG) \
-		-Dgnome_distributor=$(shell dpkg-vendor --query vendor) \
+		-Dgnome_distributor=Endless \
 		-Ddate_in_gnome_version=false \
 		-Dgtk_doc=true \
 		-Ddesktop-docs=true
